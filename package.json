@@ -68,13 +68,13 @@
     "eslint": "^8.56.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
-    "oclif": "^4.3.5",
+    "oclif": "^4.3.9",
     "semantic-release": "^22.0.12",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@commercelayer/cli-core": "^4.9.2",
+    "@commercelayer/cli-core": "^4.11.4",
     "@commercelayer/provisioning-sdk": "beta",
     "@oclif/core": "^2.15.0",
     "json-2-csv": "^5.0.1",
