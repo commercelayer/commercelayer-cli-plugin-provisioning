@@ -4,7 +4,7 @@ describe('provisioning:retrieve', () => {
   test
     .timeout(15000)
     .stdout()
-    .command(['resprovisioningurces:noc'])
+    .command(['provisioning:noc'])
     .it('runs NoC', ctx => {
       expect(ctx.stdout).to.contain('-= NoC =-')
     })
