@@ -1,16 +1,19 @@
-import { clColor } from "@commercelayer/cli-core";
-import type { CommerceLayerProvisioningClient } from "@commercelayer/provisioning-sdk";
-import Command, { Args, BaseCommand, Flags } from "../../base";
+import { clColor } from "@commercelayer/cli-core"
+import type { CommerceLayerProvisioningClient } from "@commercelayer/provisioning-sdk"
+import Command, { Args, BaseCommand, Flags } from "../../base"
+
+
 
 export default class ProvisioningExec extends BaseCommand {
-	static description = "execute an action on a resource";
 
-	static aliases = ["prov:exec", "pe", "pexec"];
+	static description = "execute an action on a resource"
+
+	static aliases = ["prov:exec", "pe", "pexec"]
 
 	static examples = [
 		"$ commercelayer provisioning:exec organizations <organizationId> transfer_ownership",
 		"$ cl prov:exec memberships <membershipId> resend",
-	];
+	]
 
 	static flags = {
 		attribute: Flags.string({
@@ -18,7 +21,7 @@ export default class ProvisioningExec extends BaseCommand {
 			description: "define a resource attribute",
 			multiple: true,
 		}),
-	};
+	}
 
 	static args = {
 		...Command.args,
@@ -32,41 +35,46 @@ export default class ProvisioningExec extends BaseCommand {
 			description: "action to execute on resource",
 			required: false,
 		}),
-	};
+	}
 
 	public async run(): Promise<void> {
-		const { args, flags } = await this.parse(ProvisioningExec);
-		const action = args.action;
-		if (!action) this.error("Missing action name");
 
-		const { res, id } = this.checkResourceId(args.resource, args.id);
+		const { args, flags } = await this.parse(ProvisioningExec)
+		const action = args.action
+		if (!action) this.error("Missing action name")
 
-		const resource = this.checkResource(res, { singular: true });
+		const { res, id } = this.checkResourceId(args.resource, args.id)
 
-		const clp = this.initCommerceLayer(flags);
+		const resource = this.checkResource(res, { singular: true })
+
+		const clp = this.initCommerceLayer(flags)
 
 		try {
+
 			const resSdk: any =
-				clp[resource.api as keyof CommerceLayerProvisioningClient];
-			this.checkOperation(resSdk, action);
+				clp[resource.api as keyof CommerceLayerProvisioningClient]
+			this.checkOperation(resSdk, action)
 
 			if (resSdk[action].length > 2) {
 				// Base action command has two arguments: resource id and request options
-				const attributes = this.attributeFlag(flags.attribute);
-				await resSdk[action](id, attributes);
+				const attributes = this.attributeFlag(flags.attribute)
+				await resSdk[action](id, attributes)
 			} else {
 				if (flags.attribute && flags.attribute.length > 0)
 					this.warn(
 						`Action ${clColor.cli.arg(action)} does not require argumemts, all the attributes will be ignored.`,
-					);
-				await resSdk[action](id);
+					)
+				await resSdk[action](id)
 			}
+
 		} catch (error) {
 			/*
 			if (isRequestInterrupted(error) && reqReader) {
 				await this.showLiveDocumentation(reqReader.request, undefined, flags)
 				cl.removeInterceptor('request', reqReader.id)
-			} else */ this.printError(error, flags, args);
+			} else */ this.printError(error, flags, args)
 		}
+
 	}
+	
 }

@@ -1,35 +1,35 @@
-import { clColor, clConfig, clUtil } from "@commercelayer/cli-core";
-import { Command, ux as cliux, Flags } from "@oclif/core";
-import type { CommandError } from "@oclif/core/lib/interfaces";
-import { resourceList } from "../../util/resources";
+import { clColor, clConfig, clUtil } from "@commercelayer/cli-core"
+import cliux from "@commercelayer/cli-ux"
+import { Command, Flags } from "@oclif/core"
+import { resourceList } from "../../util/resources"
 
 export default class ProvisioningResources extends Command {
-	static description = "list all the available Provisioning API resources";
+	static description = "list all the available Provisioning API resources"
 
-	static aliases = ["prov:resources", "pres"];
+	static aliases = ["prov:resources", "pres"]
 
 	static examples = [
 		"$ commercelayer provisioning:resources",
 		"$ cl prov:resources",
-	];
+	]
 
 	static flags = {
 		help: Flags.help({ char: "h" }),
-	};
+	}
 
 	async run(): Promise<any> {
-		await this.parse(ProvisioningResources);
+		await this.parse(ProvisioningResources)
 
 		this.log(
 			clColor.style.title("\n-= Provisioning API available resources =-\n"),
-		);
+		)
 
 		const resourceArray = resourceList("api").map((r) => {
 			return {
 				name: r,
 				url: `${clConfig.doc.provisioning_api_reference}/${r}`,
-			};
-		});
+			}
+		})
 
 		cliux.Table.table(
 			resourceArray,
@@ -47,12 +47,12 @@ export default class ProvisioningResources extends Command {
 			{
 				printLine: clUtil.log,
 			},
-		);
-		this.log();
+		)
+		this.log()
 	}
 
 	async catch(error: any): Promise<any> {
-		if (error.code === "EEXIT" && error.message === "EEXIT: 0") return;
-		return await super.catch(error as CommandError);
+		if (error.code === "EEXIT" && error.message === "EEXIT: 0") return
+		return await super.catch(error)
 	}
 }

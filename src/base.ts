@@ -17,13 +17,13 @@ import {
 	clUpdate,
 	clUtil,
 } from "@commercelayer/cli-core"
+import cliux from '@commercelayer/cli-ux'
 import commercelayer, {
 	type CommerceLayerProvisioningClient,
 	CommerceLayerProvisioningStatic,
 	type QueryParams,
 } from "@commercelayer/provisioning-sdk"
-import { Args, Command, ux as cliux, Flags } from "@oclif/core"
-import type { CommandError } from "@oclif/core/lib/interfaces"
+import { Args, Command, Flags, type Interfaces } from "@oclif/core"
 import { exportCsv } from "./csv"
 import {
 	availableLanguages,
@@ -351,7 +351,7 @@ export abstract class BaseFilterCommand extends BaseCommand {
 	}
 
 	// CATCH (override)
-	async catch(error: CommandError): Promise<any> {
+	async catch(error: Interfaces.CommandError): Promise<any> {
 		if (error.message?.match(/Missing \d required args?:\nresource/))
 			this.error(`Missing argument ${clColor.style.error("resource")}`, {
 				suggestions: [
